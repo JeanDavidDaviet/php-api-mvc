@@ -4,6 +4,7 @@ namespace App\Routing;
 
 use App\Exception\NoActionFoundException;
 use App\Routing\ControllerFinderInterface;
+use GuzzleHttp\Client;
 use ReflectionClass;
 
 class Router {
@@ -42,8 +43,16 @@ class Router {
       foreach($methods as $method){
   
         if($this->action === $method->name){
+
+          $loader = new \Twig\Loader\FilesystemLoader('views');
+          $twig = new \Twig\Environment($loader);
+
+          $client = new Client([
+              'base_uri' => 'https://jsonplaceholder.typicode.com',
+          ]);
           
-          $instancied = new $method->class;
+          $instancied = new $method->class($twig, $client);
+
           call_user_func_array(array($instancied, $this->action), $this->params);
           break;
           
