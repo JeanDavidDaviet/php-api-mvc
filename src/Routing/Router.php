@@ -2,12 +2,13 @@
 
 namespace App\Routing;
 
+use App\Exception\NoActionFoundException;
 use App\Routing\ControllerFinderInterface;
 use ReflectionClass;
 
 class Router {
 
-  private string $action;
+  private string $action = '';
   private array $params;
 
   public function __construct() {
@@ -27,10 +28,15 @@ class Router {
   }
 
   public function findController(ControllerFinderInterface $controller_finder){
+    if( ! $this->action ){
+      throw new NoActionFoundException('Aucune action n\'est définie pour cette URL');
+    }
+
     $controllers = $controller_finder->getControllers();
+
     foreach($controllers as $controller){
 
-      $class = new ReflectionClass($controller);
+      $class = new ReflectionClass('App\\Controller\\' . $controller);
       $methods = $class->getMethods();
   
       foreach($methods as $method){
