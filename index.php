@@ -3,20 +3,15 @@
 require 'vendor/autoload.php';
 
 use App\Controller\HomeController;
-use App\ControllerFinder;
-use App\Router;
+use App\Routing\ControllerFinder;
+use App\Routing\Router;
 
 $router = new Router();
+$controllerFinder = new ControllerFinder(dirname(__FILE__) . '/src/controller');
 
-if(isset($action)){
-
-  $controllerFinder = new ControllerFinder();
+try {
   $router->findController($controllerFinder);
-  
-}else{
-
+}catch(Exception $e){
   $controller = new HomeController();
   $controller->index();
-  
 }
-

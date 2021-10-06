@@ -1,15 +1,15 @@
 <?php 
 
-namespace App;
+namespace App\Routing;
 
-use ControllerFinderInterface;
+use App\Routing\ControllerFinderInterface;
 
 class ControllerFinder implements ControllerFinderInterface {
 
   private array $controllers = [];
   private array $controllers_files = [];
 
-  public function __construct(private string $controllers_path = 'src/controllers') {
+  public function __construct(private string $controllers_path) {
     $this->controllers_files = scandir($controllers_path);
     $this->setControllers();
   }

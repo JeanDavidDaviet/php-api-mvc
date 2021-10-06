@@ -1,9 +1,8 @@
 <?php 
 
-namespace App;
+namespace App\Routing;
 
-use ControllerFinderInterface;
-use Exception;
+use App\Routing\ControllerFinderInterface;
 use ReflectionClass;
 
 class Router {
@@ -27,7 +26,8 @@ class Router {
     }
   }
 
-  public function findController(ControllerFinderInterface $controllers){
+  public function findController(ControllerFinderInterface $controller_finder){
+    $controllers = $controller_finder->getControllers();
     foreach($controllers as $controller){
 
       $class = new ReflectionClass($controller);
@@ -38,14 +38,9 @@ class Router {
         if($this->action === $method->name){
           
           $instancied = new $method->class;
-          try {
-            call_user_func_array(array($instancied, $this->action), $this->params);
-          } catch(Exception $e){
-            // echo '<pre>';
-            // var_dump($e->getMessage());
-            // echo '</pre>';
-          }
+          call_user_func_array(array($instancied, $this->action), $this->params);
           break;
+          
         }
       }
     }
