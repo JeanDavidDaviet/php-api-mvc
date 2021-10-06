@@ -3,15 +3,12 @@
 namespace App\Controller;
 
 use App\Exception\PostNotFoundException;
-use GuzzleHttp\ClientInterface;
-use Twig\Environment;
+use App\View\WebController;
 
-class PostsController {
-
-  public function __construct(private Environment $renderer, private ClientInterface $client) { }
+class PostsController extends WebController {
 
   public function single($post_id = 0){
-
+    
     if( ! $post_id ){
 
       throw new PostNotFoundException('post_id not found : ' . $post_id);

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\View;
 
-use App\View\RendererInterface;
+use GuzzleHttp\ClientInterface;
+use Twig\Environment;
 
 class WebController {
 
-  public function __construct(private RendererInterface $renderer) { }
+  public function __construct(protected Environment $renderer, protected ClientInterface $client) { }
+
 }
